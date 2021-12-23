@@ -1,0 +1,117 @@
+esphome:
+  name: shutterswitch
+  platform: ESP8266
+  board: esp12e
+  name_add_mac_suffix: true
+
+# Enable logging
+#logger:
+
+# Enable Home Assistant API
+api:
+  # TODO change this password. it is optional so you can also remove it (though I'd recomand to use a unique password)
+  password: "XXXXXX"
+
+ota:
+  # TODO change this password. it is optional so you can also remove it (though I'd recomand to use a unique password)
+  password: "YYYYYY"
+
+wifi:
+  # TODO set the SSID of your Wi-Fi network
+  ssid: "SSSSSSSSS"
+  # TODO set the Key/password for your Wi-FI network
+  password: "KKKKKKKK"
+
+  # When things are working you can try to enable power saving mode
+  #power_save_mode: high
+
+sensor:
+  - platform: wifi_signal
+    name: "WiFi Signal Sensor"
+    update_interval: 10min
+
+switch:
+  - platform: gpio
+    id: led_up_green
+    pin: GPIO12
+    restore_mode: ALWAYS_OFF
+
+  - platform: gpio
+    id: led_stop_green
+    pin: GPIO16
+    restore_mode: ALWAYS_OFF
+
+  - platform: gpio
+    id: led_down_green
+    pin: GPIO0
+    restore_mode: ALWAYS_OFF
+
+  - platform: gpio
+    id: up_relay
+    pin: GPIO15
+    interlock: [down_relay]
+    restore_mode: ALWAYS_OFF
+
+  - platform: gpio
+    id: down_relay
+    pin: GPIO14
+    interlock: [up_relay]
+    restore_mode: ALWAYS_OFF
+
+status_led:
+  id: led_status
+  pin: GPIO2
+
+binary_sensor:
+  - platform: gpio
+    id: up_button
+    pin:
+      number: GPIO5
+      inverted: true
+    on_press:
+        - cover.open: shutter1
+        - switch.turn_on: led_up_green
+    on_release:
+      - switch.turn_off: led_up_green
+
+  - platform: gpio
+    id: stop_button
+    pin:
+      number: GPIO4
+      inverted: true
+    on_press:
+      - cover.stop: shutter1
+      - switch.turn_on: led_stop_green
+    on_release:
+      - switch.turn_off: led_stop_green
+
+
+  - platform: gpio
+    id: down_button
+    pin:
+      number: GPIO13
+      inverted: true
+    on_press:
+        - cover.close: shutter1
+        - switch.turn_on: led_down_green
+    on_release:
+      - switch.turn_off: led_down_green
+
+
+cover:
+  - platform: time_based
+    name: "Volets roulants"
+    id: shutter1
+    device_class: shutter
+
+    open_action:
+      - switch.turn_on: up_relay
+    open_duration: 22s
+
+    close_action:
+      - switch.turn_on: down_relay
+    close_duration: 21s
+
+    stop_action:
+      - switch.turn_off: up_relay
+      - switch.turn_off: down_relay
