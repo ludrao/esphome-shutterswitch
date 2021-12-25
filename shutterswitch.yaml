@@ -9,26 +9,22 @@ esphome:
 
 # Enable Home Assistant API
 api:
-  # TODO change this password. it is optional so you can also remove it (though I'd recomand to use a unique password)
-  password: "XXXXXX"
+  password: !secret hass_api_key
 
 ota:
-  # TODO change this password. it is optional so you can also remove it (though I'd recomand to use a unique password)
-  password: "YYYYYY"
+  password: !secret ota_key
 
 wifi:
-  # TODO set the SSID of your Wi-Fi network
-  ssid: "SSSSSSSSS"
-  # TODO set the Key/password for your Wi-FI network
-  password: "KKKKKKKK"
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
 
-  # When things are working you can try to enable power saving mode
-  #power_save_mode: high
+  # Note: you may try to comment that line if the Wi-Fi connection is not stable...
+  power_save_mode: high
 
 sensor:
   - platform: wifi_signal
     name: "WiFi Signal Sensor"
-    update_interval: 10min
+    update_interval: 1min
 
 switch:
   - platform: gpio
