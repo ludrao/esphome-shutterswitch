@@ -93,6 +93,18 @@ The benefit to using Home Assistant is that it is pre-integrated with esphome an
 There is also a 'lighter' alternative to use the ESPHome dashboard (simpler tool to manage your ESPHome devices) but I did not try it.
 
 To implement the shutter switch firmware I used this [yaml file](shutterswitch.yaml).
+
+**Note:** you need to create a `secrets.yaml` file at the same level, it shall contain all the secrets used by the firmware, something like:
+```yaml
+# OTA and API passwords
+hass_api_key: "XXXXXXX"
+ota_key: "YYYYYY"
+
+# Wi-Fi settings
+wifi_ssid: "SOME SSID"
+wifi_password: "WIFI PASSWORD"
+```
+
 Modify the fields to add your own passwords and Wi-Fi credentials and then simply run `esphome run shutterswitch.yaml`
 
 Once your device is flashed, booted, attached to the Wi-Fi network, Home Assistant should detect it. You can see/configure it in the Configure/Integration screen

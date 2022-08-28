@@ -19,11 +19,11 @@ wifi:
   password: !secret wifi_password
 
   # Note: you may try to comment that line if the Wi-Fi connection is not stable...
-  power_save_mode: high
+  #power_save_mode: high
 
 sensor:
   - platform: wifi_signal
-    name: "WiFi Signal Sensor"
+    name: "WiFi Signal - Shutterswitch"
     update_interval: 1min
 
 switch:
